@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pharos Points Checker</title>
   <style>
-    /* Reset dan font */
+    /* Reset and font */
     * {
       box-sizing: border-box;
       margin: 0; padding: 0;
@@ -17,6 +17,7 @@
       color: #f0f4f8;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 20px;
@@ -101,15 +102,27 @@
       font-weight: 600;
       text-align: center;
     }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #a0bfff;
+      user-select: none;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Pharos Points Checker</h2>
-    <input type="text" id="addressInput" placeholder="Masukkan alamat wallet (0x...)" />
-    <button onclick="checkPoints()">Cek Poin</button>
+    <input type="text" id="addressInput" placeholder="Enter wallet address (0x...)" />
+    <button onclick="checkPoints()">Check Points</button>
     <div class="result" id="result"></div>
   </div>
+
+  <footer>
+    Made with <span style="color:#ff4b5c;">&#10084;&#65039;</span> by Sahun
+  </footer>
 
   <script>
     async function checkPoints() {
@@ -117,31 +130,31 @@
       const resultDiv = document.getElementById('result');
 
       if (!address.startsWith("0x") || address.length !== 42) {
-        resultDiv.innerHTML = "<p class='error'>Alamat tidak valid. Pastikan dimulai dengan '0x' dan panjang 42 karakter.</p>";
+        resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
         return;
       }
 
-      resultDiv.textContent = "Memuat...";
+      resultDiv.textContent = "Loading...";
 
       try {
         const res = await fetch(`/api/check?address=${address}`);
         const data = await res.json();
 
         if (data.code !== 0) {
-          resultDiv.innerHTML = "<p class='error'>Gagal mengambil data. Coba lagi nanti.</p>";
+          resultDiv.innerHTML = "<p class='error'>Failed to fetch data. Please try again later.</p>";
           return;
         }
 
         const user = data.data.user_info;
         resultDiv.innerHTML = `
-          <p><strong>Alamat:</strong> ${user.Address}</p>
-          <p><strong>Total Poin:</strong> ${user.TotalPoints}</p>
+          <p><strong>Address:</strong> ${user.Address}</p>
+          <p><strong>Total Points:</strong> ${user.TotalPoints}</p>
           <p><strong>Task Points:</strong> ${user.TaskPoints}</p>
           <p><strong>Invite Points:</strong> ${user.InvitePoints}</p>
-          <p><strong>Is KOL:</strong> ${user.IsKol ? 'Ya' : 'Tidak'}</p>
+          <p><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</p>
         `;
       } catch (err) {
-        resultDiv.innerHTML = "<p class='error'>Terjadi kesalahan saat mengambil data.</p>";
+        resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
         console.error(err);
       }
     }

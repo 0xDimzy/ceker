@@ -1,116 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pharos Points Checker</title>
-  <style>
-    /* Reset and font */
-    * {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #4b6cb7, #182848);
-      color: #f0f4f8;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-      backdrop-filter: blur(10px);
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: #cce7ff;
-      text-shadow: 1px 1px 3px #00000050;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 12px 15px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: none;
-      margin-bottom: 15px;
-      outline: none;
-      transition: box-shadow 0.3s ease;
-    }
-
-    input[type="text"]:focus {
-      box-shadow: 0 0 8px #a0c4ff;
-      background-color: #e7f0ff;
-      color: #182848;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px 15px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      background-color: #2b6cb0;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 5px 15px #234f7aaa;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #1d4d8a;
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px #1d4d8aee;
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .result {
-      margin-top: 25px;
-      background-color: rgba(255, 255, 255, 0.15);
-      padding: 15px 20px;
-      border-radius: 10px;
-      font-size: 1rem;
-      color: #cce7ff;
-      min-height: 90px;
-      box-shadow: inset 0 0 10px #94b9ff88;
-      text-align: left;
-      line-height: 1.4;
-      word-break: break-word;
-    }
-
-    .error {
-      color: #ff6b6b;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #a0bfff;
-      user-select: none;
-      text-align: center;
-    }
-  </style>
+  <link rel="stylesheet" href="public/style.css" />
 </head>
 <body>
   <div class="container">
@@ -124,53 +19,6 @@
     Made with <span style="color:#ff4b5c;">&#10084;&#65039;</span> by Sahun
   </footer>
 
-  <script>
-    async function checkPoints() {
-  const address = document.getElementById('addressInput').value.trim();
-  const resultDiv = document.getElementById('result');
-
-  if (!address.startsWith("0x") || address.length !== 42) {
-    resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
-    return;
-  }
-
-  resultDiv.textContent = "Loading...";
-
-  try {
-    // Fetch user profile points
-    const profileRes = await fetch(`/api/check?address=${address}`);
-    const profileData = await profileRes.json();
-
-    if (profileData.code !== 0) {
-      resultDiv.innerHTML = "<p class='error'>Failed to fetch profile data. Please try again later.</p>";
-      return;
-    }
-
-    // Fetch invitees data
-    const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
-    const inviteesData = await inviteesRes.json();
-
-    if (inviteesData.code !== 0) {
-      resultDiv.innerHTML = "<p class='error'>Failed to fetch invitees data. Please try again later.</p>";
-      return;
-    }
-
-    const user = profileData.data.user_info;
-    const totalInvitees = inviteesData.data.total;
-
-    resultDiv.innerHTML = `
-      <p><strong>Address:</strong> ${user.Address}</p>
-      <p><strong>Total Points:</strong> ${user.TotalPoints}</p>
-      <p><strong>Task Points:</strong> ${user.TaskPoints}</p>
-      <p><strong>Invite Points:</strong> ${user.InvitePoints}</p>
-      <p><strong>Total Invitees:</strong> ${totalInvitees}</p>
-      <p><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</p>
-    `;
-  } catch (err) {
-    resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
-    console.error(err);
-  }
-}
-  </script>
+  <script src="public/script.js"></script>
 </body>
 </html>

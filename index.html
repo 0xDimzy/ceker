@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pharos Points Checker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; padding: 2rem; max-width: 500px; margin: auto; }
+    input, button { padding: 10px; width: 100%; margin-top: 10px; }
+    .result { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>Cek Poin Pharos</h2>
+  <input type="text" id="addressInput" placeholder="Masukkan alamat wallet">
+  <button onclick="checkPoints()">Cek</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    async function checkPoints() {
+      const address = document.getElementById('addressInput').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      if (!address.startsWith("0x") || address.length !== 42) {
+        resultDiv.innerHTML = "<p style='color:red;'>Alamat tidak valid</p>";
+        return;
+      }
+
+      resultDiv.innerHTML = "Memuat...";
+
+      try {
+        const res = await fetch(`/api/check?address=${address}`);
+        const data = await res.json();
+
+        if (data.code !== 0) {
+          resultDiv.innerHTML = "<p style='color:red;'>Gagal mengambil data</p>";
+          return;
+        }
+
+        const user = data.data.user_info;
+        resultDiv.innerHTML = `
+          <p><strong>Alamat:</strong> ${user.Address}</p>
+          <p><strong>Total Poin:</strong> ${user.TotalPoints}</p>
+          <p><strong>Task Points:</strong> ${user.TaskPoints}</p>
+          <p><strong>Invite Points:</strong> ${user.InvitePoints}</p>
+          <p><strong>Is KOL:</strong> ${user.IsKol ? 'Ya' : 'Tidak'}</p>
+        `;
+      } catch (err) {
+        resultDiv.innerHTML = "<p style='color:red;'>Terjadi kesalahan saat mengambil data</p>";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>

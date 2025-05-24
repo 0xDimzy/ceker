@@ -126,38 +126,51 @@
 
   <script>
     async function checkPoints() {
-      const address = document.getElementById('addressInput').value.trim();
-      const resultDiv = document.getElementById('result');
+  const address = document.getElementById('addressInput').value.trim();
+  const resultDiv = document.getElementById('result');
 
-      if (!address.startsWith("0x") || address.length !== 42) {
-        resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
-        return;
-      }
+  if (!address.startsWith("0x") || address.length !== 42) {
+    resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
+    return;
+  }
 
-      resultDiv.textContent = "Loading...";
+  resultDiv.textContent = "Loading...";
 
-      try {
-        const res = await fetch(`/api/check?address=${address}`);
-        const data = await res.json();
+  try {
+    // Fetch user profile points
+    const profileRes = await fetch(`/api/check?address=${address}`);
+    const profileData = await profileRes.json();
 
-        if (data.code !== 0) {
-          resultDiv.innerHTML = "<p class='error'>Failed to fetch data. Please try again later.</p>";
-          return;
-        }
-
-        const user = data.data.user_info;
-        resultDiv.innerHTML = `
-          <p><strong>Address:</strong> ${user.Address}</p>
-          <p><strong>Total Points:</strong> ${user.TotalPoints}</p>
-          <p><strong>Task Points:</strong> ${user.TaskPoints}</p>
-          <p><strong>Invite Points:</strong> ${user.InvitePoints}</p>
-          <p><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</p>
-        `;
-      } catch (err) {
-        resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
-        console.error(err);
-      }
+    if (profileData.code !== 0) {
+      resultDiv.innerHTML = "<p class='error'>Failed to fetch profile data. Please try again later.</p>";
+      return;
     }
+
+    // Fetch invitees data
+    const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
+    const inviteesData = await inviteesRes.json();
+
+    if (inviteesData.code !== 0) {
+      resultDiv.innerHTML = "<p class='error'>Failed to fetch invitees data. Please try again later.</p>";
+      return;
+    }
+
+    const user = profileData.data.user_info;
+    const totalInvitees = inviteesData.data.total;
+
+    resultDiv.innerHTML = `
+      <p><strong>Address:</strong> ${user.Address}</p>
+      <p><strong>Total Points:</strong> ${user.TotalPoints}</p>
+      <p><strong>Task Points:</strong> ${user.TaskPoints}</p>
+      <p><strong>Invite Points:</strong> ${user.InvitePoints}</p>
+      <p><strong>Total Invitees:</strong> ${totalInvitees}</p>
+      <p><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</p>
+    `;
+  } catch (err) {
+    resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
+    console.error(err);
+  }
+}
   </script>
 </body>
 </html>

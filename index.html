@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pharos Points Checker</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { font-family: sans-serif; padding: 2rem; max-width: 500px; margin: auto; }
-    input, button { padding: 10px; width: 100%; margin-top: 10px; }
-    .result { margin-top: 20px; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h2>Cek Poin Pharos</h2>
-  <input type="text" id="addressInput" placeholder="Masukkan alamat wallet">
-  <button onclick="checkPoints()">Cek</button>
-  <div class="result" id="result"></div>
+  <div class="container">
+    <h2>Pharos Points Checker</h2>
+    <input type="text" id="addressInput" placeholder="Masukkan alamat wallet (0x...)" />
+    <button onclick="checkPoints()">Cek Poin</button>
+    <div class="result" id="result"></div>
+  </div>
 
   <script>
     async function checkPoints() {
@@ -22,18 +20,18 @@
       const resultDiv = document.getElementById('result');
 
       if (!address.startsWith("0x") || address.length !== 42) {
-        resultDiv.innerHTML = "<p style='color:red;'>Alamat tidak valid</p>";
+        resultDiv.innerHTML = "<p class='error'>Alamat tidak valid. Pastikan dimulai dengan '0x' dan panjang 42 karakter.</p>";
         return;
       }
 
-      resultDiv.innerHTML = "Memuat...";
+      resultDiv.textContent = "Memuat...";
 
       try {
         const res = await fetch(`/api/check?address=${address}`);
         const data = await res.json();
 
         if (data.code !== 0) {
-          resultDiv.innerHTML = "<p style='color:red;'>Gagal mengambil data</p>";
+          resultDiv.innerHTML = "<p class='error'>Gagal mengambil data. Coba lagi nanti.</p>";
           return;
         }
 
@@ -46,7 +44,7 @@
           <p><strong>Is KOL:</strong> ${user.IsKol ? 'Ya' : 'Tidak'}</p>
         `;
       } catch (err) {
-        resultDiv.innerHTML = "<p style='color:red;'>Terjadi kesalahan saat mengambil data</p>";
+        resultDiv.innerHTML = "<p class='error'>Terjadi kesalahan saat mengambil data.</p>";
         console.error(err);
       }
     }

@@ -1,28 +1,37 @@
+import fetch from 'node-fetch';
+
 export default async function handler(req, res) {
   const { address } = req.query;
 
-  if (!address) {
-    return res.status(400).json({ error: 'No address provided' });
+  if (!address || !address.startsWith('0x') || address.length !== 42) {
+    return res.status(400).json({ code: 1, msg: 'Invalid address' });
   }
 
-  const BEARER_TOKEN = process.env.PHAROS_BEARER_TOKEN;
+  const token = process.env.PHAROS_BEARER_TOKEN;
+  if (!token) {
+    return res.status(500).json({ code: 1, msg: 'Server token not configured' });
+  }
+
+  const apiUrl = `https://api.pharosnetwork.xyz/user/profile?address=${address}`;
 
   try {
-    const response = await fetch(`https://api.pharosnetwork.xyz/user/profile?address=${address}`, {
-      method: 'GET',
+    const response = await fetch(apiUrl, {
       headers: {
-        'Authorization': `Bearer ${BEARER_TOKEN}`,
-        'Referer': 'https://testnet.pharosnetwork.xyz',
-        'Origin': 'https://testnet.pharosnetwork.xyz',
-        'Accept': 'application/json',
-        'User-Agent': 'Mozilla/5.0',
+        Authorization: `Bearer ${token}`,
+        Referer: 'https://testnet.pharosnetwork.xyz'
       }
     });
 
+    if (!response.ok) {
+      const text = await response.text();
+      return res.status(response.status).json({ code: 1, msg: `API error: ${text}` });
+    }
+
     const data = await response.json();
-    res.status(200).json(data);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Failed to fetch data' });
+    return res.status(200).json(data);
+
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    return res.status(500).json({ code: 1, msg: 'Internal server error' });
   }
 }

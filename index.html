@@ -51,12 +51,12 @@
         const totalInvitees = inviteesData.data.total;
 
         resultDiv.innerHTML = `
-          <p><strong>Address:</strong> ${user.Address}</p>
-          <p><strong>Total Points:</strong> ${user.TotalPoints}</p>
-          <p><strong>Task Points:</strong> ${user.TaskPoints}</p>
-          <p><strong>Invite Points:</strong> ${user.InvitePoints}</p>
-          <p><strong>Total Invitees:</strong> ${totalInvitees}</p>
-          <p><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</p>
+          <b><strong>Address:</strong> ${user.Address}</b>
+          <b><strong>Total Points:</strong> ${user.TotalPoints}</b>
+          <b><strong>Task Points:</strong> ${user.TaskPoints}</b>
+          <b><strong>Invite Points:</strong> ${user.InvitePoints}</b>
+          <b><strong>Total Invitees:</strong> ${totalInvitees}</b>
+          <b><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</b>
         `;
       } catch (err) {
         resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";

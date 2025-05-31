@@ -1,51 +1,79 @@
-<script>
-  async function checkPoints() {
-    const address = document.getElementById('addressInput').value.trim();
-    const resultDiv = document.getElementById('result');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pharos Points Checker</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Pharos Points Checker</h2>
+    <input type="text" id="addressInput" placeholder="Enter wallet address (0x...)" />
+    <button onclick="checkPoints()">Check Points</button>
+    <div class="result" id="result"></div>
+  </div>
 
-    if (!address.startsWith("0x") || address.length !== 42) {
-      resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
-      return;
-    }
+  <footer>
+    Made with <span style="color:#ff4b5c;">&#10084;&#65039;</span> by 
+    <a href="https://t.me/balstotairdrop" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
+      BALSTOT Airdrop
+    </a>
+  </footer>
 
-    resultDiv.textContent = "Loading...";
+  <script>
+    async function checkPoints() {
+      const address = document.getElementById('addressInput').value.trim();
+      const resultDiv = document.getElementById('result');
 
-    try {
-      const profileRes = await fetch(`/api/check?address=${address}`);
-      const profileData = await profileRes.json();
-
-      const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
-      const inviteesData = await inviteesRes.json();
-
-      const tasksRes = await fetch(`/api/tasks?address=${address}`);
-      const tasksData = await tasksRes.json();
-
-      if (profileData.code !== 0 || inviteesData.code !== 0 || tasksData.code !== 0) {
-        resultDiv.innerHTML = "<p class='error'>Failed to fetch data. Please try again later.</p>";
+      if (!address.startsWith("0x") || address.length !== 42) {
+        resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
         return;
       }
 
-      const user = profileData.data.user_info;
-      const totalInvitees = inviteesData.data.total;
-      const tasks = tasksData.data.user_tasks;
+      resultDiv.textContent = "Loading...";
 
-      const taskList = tasks.map(task =>
-        `<li>${task.TaskName}: Completed ${task.CompleteTimes} times</li>`
-      ).join("");
+      try {
+        // Fetch profile data
+        const profileRes = await fetch(`/api/check?address=${address}`);
+        const profileData = await profileRes.json();
 
-      resultDiv.innerHTML = `
-        <p><b><strong>Address:</strong> ${user.Address}</b></p>
-        <p><b><strong>Total Points:</strong> ${user.TotalPoints}</b></p>
-        <p><b><strong>Task Points:</strong> ${user.TaskPoints}</b></p>
-        <p><b><strong>Invite Points:</strong> ${user.InvitePoints}</b></p>
-        <p><b><strong>Total Invitees:</strong> ${totalInvitees}</b></p>
-        <p><b><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</b></p>
-        <p><b><strong>Completed Tasks:</strong></b></p>
-        <ul>${taskList}</ul>
-      `;
-    } catch (err) {
-      resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
-      console.error(err);
+        // Fetch invitee data
+        const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
+        const inviteesData = await inviteesRes.json();
+
+        // Fetch task data
+        const tasksRes = await fetch(`/api/tasks?address=${address}`);
+        const tasksData = await tasksRes.json();
+
+        if (profileData.code !== 0 || inviteesData.code !== 0 || tasksData.code !== 0) {
+          resultDiv.innerHTML = "<p class='error'>Failed to fetch data. Please try again later.</p>";
+          return;
+        }
+
+        const user = profileData.data.user_info;
+        const totalInvitees = inviteesData.data.total;
+        const tasks = tasksData.data.user_tasks;
+
+        const taskListHtml = tasks.map(task => {
+          return `<li>${task.TaskName} - Completed: ${task.CompleteTimes} times</li>`;
+        }).join("");
+
+        resultDiv.innerHTML = `
+          <p><b>Address:</b> ${user.Address}</p>
+          <p><b>Total Points:</b> ${user.TotalPoints}</p>
+          <p><b>Task Points:</b> ${user.TaskPoints}</p>
+          <p><b>Invite Points:</b> ${user.InvitePoints}</p>
+          <p><b>Total Invitees:</b> ${totalInvitees}</p>
+          <p><b>Is KOL:</b> ${user.IsKol ? 'Yes' : 'No'}</p>
+          <p><b>Completed Tasks:</b></p>
+          <ul>${taskListHtml}</ul>
+        `;
+      } catch (err) {
+        resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
+        console.error(err);
+      }
     }
-  }
-</script>
+  </script>
+</body>
+</html>

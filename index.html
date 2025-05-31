@@ -23,50 +23,63 @@ Made with <span style="color:#ff4b5c;">&#10084;&#65039;</span> by
 
 
   <script>
-    async function checkPoints() {
-      const address = document.getElementById('addressInput').value.trim();
-      const resultDiv = document.getElementById('result');
+  async function checkPoints() {
+    const address = document.getElementById('addressInput').value.trim();
+    const resultDiv = document.getElementById('result');
 
-      if (!address.startsWith("0x") || address.length !== 42) {
-        resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
-        return;
-      }
-
-      resultDiv.textContent = "Loading...";
-
-      try {
-        const profileRes = await fetch(`/api/check?address=${address}`);
-        const profileData = await profileRes.json();
-
-        if (profileData.code !== 0) {
-          resultDiv.innerHTML = "<p class='error'>Failed to fetch profile data. Please try again later.</p>";
-          return;
-        }
-
-        const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
-        const inviteesData = await inviteesRes.json();
-
-        if (inviteesData.code !== 0) {
-          resultDiv.innerHTML = "<p class='error'>Failed to fetch invitees data. Please try again later.</p>";
-          return;
-        }
-
-        const user = profileData.data.user_info;
-        const totalInvitees = inviteesData.data.total;
-
-        resultDiv.innerHTML = `
-          <p><b><strong>Address:</strong> ${user.Address}</b></p>
-          <p><b><strong>Total Points:</strong> ${user.TotalPoints}</b></p>
-          <p><b><strong>Task Points:</strong> ${user.TaskPoints}</b></p>
-          <p><b><strong>Invite Points:</strong> ${user.InvitePoints}</b></p>
-          <p><b><strong>Total Invitees:</strong> ${totalInvitees}</b></p>
-          <p><b><strong>Is KOL:</strong> ${user.IsKol ? 'Yes' : 'No'}</b></p>
-        `;
-      } catch (err) {
-        resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
-        console.error(err);
-      }
+    if (!address.startsWith("0x") || address.length !== 42) {
+      resultDiv.innerHTML = "<p class='error'>Invalid address. Make sure it starts with '0x' and is 42 characters long.</p>";
+      return;
     }
-  </script>
+
+    resultDiv.textContent = "Loading...";
+
+    try {
+      // Fetch profile
+      const profileRes = await fetch(`/api/check?address=${address}`);
+      const profileData = await profileRes.json();
+      if (profileData.code !== 0) throw new Error('Failed to fetch profile');
+
+      // Fetch invitees
+      const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
+      const inviteesData = await inviteesRes.json();
+      if (inviteesData.code !== 0) throw new Error('Failed to fetch invitees');
+
+      // Fetch tasks completed
+      const tasksRes = await fetch(`/api/tasks?address=${address}`);
+      const tasksData = await tasksRes.json();
+      if (tasksData.code !== 0) throw new Error('Failed to fetch tasks');
+
+      const user = profileData.data.user_info;
+      const totalInvitees = inviteesData.data.total;
+
+      // Build tasks list HTML
+      let tasksHTML = '';
+      if (tasksData.data.user_tasks.length > 0) {
+        tasksHTML = `<h3>Completed Tasks:</h3><ul>`;
+        for (const task of tasksData.data.user_tasks) {
+          tasksHTML += `<li>Task ID: ${task.TaskId}, Completed: ${task.CompleteTimes} times</li>`;
+        }
+        tasksHTML += `</ul>`;
+      } else {
+        tasksHTML = `<p>No completed tasks found.</p>`;
+      }
+
+      resultDiv.innerHTML = `
+        <p><b>Address:</b> ${user.Address}</p>
+        <p><b>Total Points:</b> ${user.TotalPoints}</p>
+        <p><b>Task Points:</b> ${user.TaskPoints}</p>
+        <p><b>Invite Points:</b> ${user.InvitePoints}</p>
+        <p><b>Total Invitees:</b> ${totalInvitees}</p>
+        <p><b>Is KOL:</b> ${user.IsKol ? 'Yes' : 'No'}</p>
+        ${tasksHTML}
+      `;
+    } catch (err) {
+      resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
+      console.error(err);
+    }
+  }
+</script>
+
 </body>
 </html>

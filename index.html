@@ -11,6 +11,12 @@
     <h2>Pharos Points Checker</h2>
     <input type="text" id="addressInput" placeholder="Enter wallet address (0x...)" />
     <button onclick="checkPoints()">Check Points</button>
+    
+    <!-- Notifikasi -->
+    <p class="note" style="color: #ff9900; font-style: italic;">
+      ⚠️ Data yang ditampilkan mungkin tidak real-time (terjadi delay sinkronisasi).
+    </p>
+    
     <div class="result" id="result"></div>
   </div>
 
@@ -34,15 +40,12 @@
       resultDiv.textContent = "Loading...";
 
       try {
-        // Fetch profile data
         const profileRes = await fetch(`/api/check?address=${address}`);
         const profileData = await profileRes.json();
 
-        // Fetch invitee data
         const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
         const inviteesData = await inviteesRes.json();
 
-        // Fetch task data
         const tasksRes = await fetch(`/api/tasks?address=${address}`);
         const tasksData = await tasksRes.json();
 

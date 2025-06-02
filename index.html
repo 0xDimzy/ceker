@@ -4,18 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pharos Points Checker</title>
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- MENU DROPDOWN DI POJOK KANAN -->
-  <div class="navbar">
-    <div class="dropdown">
-      <button class="dropdown-btn">☰</button>
-      <div class="dropdown-content">
-        <a href="https://t.me/balstotairdrop" target="_blank">Join Telegram</a>
-      </div>
-    </div>
+  <!-- Tombol sticky Join Telegram -->
+  <div class="telegram-button">
+    <a href="https://t.me/balstotairdrop" target="_blank" rel="noopener noreferrer" aria-label="Join Group Telegram">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" alt="Telegram Logo" />
+      Join Group Telegram
+    </a>
   </div>
 
   <div class="container">
@@ -23,16 +21,15 @@
     <input type="text" id="addressInput" placeholder="Enter wallet address (0x...)" />
     <button onclick="checkPoints()">Check Points</button>
 
-    <!-- NOTIFIKASI -->
     <p class="note">
-      ⚠️ Data yang ditampilkan mungkin tidak real-time (terjadi delay sinkronisasi).
+      ⚠️ Data shown may not be real-time (sync delay possible).
     </p>
 
     <div class="result" id="result"></div>
   </div>
 
   <footer>
-    Made with <span style="color:#ff4b5c;">&#10084;&#65039;</span> by 
+    Made with <span style="color:#ff4b5c;">&#10084;&#65039;</span> by
     <a href="https://t.me/balstotairdrop" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
       BALSTOT Airdrop
     </a>

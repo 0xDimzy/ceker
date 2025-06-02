@@ -1,3 +1,4 @@
+/* Reset dan dasar */
 * {
   box-sizing: border-box;
   margin: 0; padding: 0;
@@ -12,6 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  position: relative; /* untuk referensi posisi absolute child */
 }
 .container {
   background: rgba(255, 255, 255, 0.1);
@@ -22,6 +24,7 @@ body {
   width: 100%;
   text-align: center;
   backdrop-filter: blur(10px);
+  z-index: 1;
 }
 h2 {
   margin-bottom: 20px;
@@ -90,56 +93,65 @@ footer {
   color: #a0bfff;
   user-select: none;
   text-align: center;
+  z-index: 1;
 }
-    .navbar {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-    }
+.note {
+  color: #ff9900;
+  font-style: italic;
+}
 
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
+/* Tombol Telegram sticky di pojok kanan atas */
+.telegram-button {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 9999;
+}
 
-    .dropdown-btn {
-      background-color: #444;
-      color: white;
-      padding: 8px 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+.telegram-button a {
+  display: flex;
+  align-items: center;
+  background-color: #0088cc;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      right: 0;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-      border-radius: 4px;
-      overflow: hidden;
-    }
+.telegram-button a:hover {
+  background-color: #007ab8;
+  transform: scale(1.05);
+}
 
-    .dropdown-content a {
-      color: black;
-      padding: 10px 16px;
-      text-decoration: none;
-      display: block;
-    }
+.telegram-button img {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
 
-    .dropdown-content a:hover {
-      background-color: #f0f0f0;
-    }
+/* RESPONSIVE UNTUK TOMBOL TELEGRAM */
+@media screen and (max-width: 600px) {
+  .telegram-button {
+    top: 10px;
+    right: 10px;
+  }
 
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
+  .telegram-button a {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
 
-    .note {
-      color: #ff9900;
-      font-style: italic;
-    }
+  .telegram-button img {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+
+  .container {
+    padding: 20px 20px;
+  }
+}

@@ -13,7 +13,7 @@ async function checkPoints() {
     const profileRes = await fetch(`/api/check?address=${address}`);
     const profileData = await profileRes.json();
 
-    const inviteesRes = await fetch(`/api/invitees?address=${address}&page=1&page_size=15`);
+    const inviteesRes = await fetch(`/api/invitees?address=${address}`);
     const inviteesData = await inviteesRes.json();
 
     const tasksRes = await fetch(`/api/tasks?address=${address}`);
@@ -29,7 +29,7 @@ async function checkPoints() {
     const tasks = tasksData.data.user_tasks;
 
     const taskListHtml = tasks.map(task => {
-      return `<li>${task.TaskName} - Completed: ${task.CompleteTimes} times</li>`;
+      return `<li>${task.TaskName} : ${task.CompleteTimes} times</li>`;
     }).join("");
 
     resultDiv.innerHTML = `

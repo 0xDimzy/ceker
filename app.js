@@ -38,10 +38,10 @@ async function checkPoints() {
     }).join("");
 
     resultDiv.innerHTML = `
-      resultDiv.innerHTML = `
   <div class="result-row">
     <div class="result-label">Address</div>
     <div class="result-value short-address">${shortenAddress(user.Address)}</div>
+  </div>
   </div>
   <div class="result-row">
     <div class="result-label">Total Points</div>

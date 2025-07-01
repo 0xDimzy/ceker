@@ -162,3 +162,46 @@ footer {
     padding: 20px 20px;
   }
 }
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.result-label {
+  font-weight: 600;
+  color: #a0bfff;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.result-value {
+  text-align: right;
+  flex: 1;
+  color: #fff;
+  word-break: break-all;
+}
+
+.task-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #cce7ff;
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 500px) {
+  .result-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .result-label, .result-value {
+    text-align: left;
+    width: 100%;
+  }
+}

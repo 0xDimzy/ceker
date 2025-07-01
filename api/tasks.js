@@ -25,14 +25,18 @@ export default async function handler(req, res) {
 
     // Mapping nama TaskId
     const taskNames = {
-      101: 'Swap',
-      102: 'Provide Liquidity',
-      103: 'Send to Friends',
+      101: 'Zenith Swaps',
+      102: 'Zenith LPs',
+      103: 'Token Transfer',
+      104: 'Pharos Domain',      // Tambahan
+      105: 'NFT Badge',          // Tambahan
+      106: 'Faroswap Swaps',     // Tambahan
+      107: 'Faroswap LPs',       // Tambahan
     };
 
     // Filter & mapping hasil
     const filteredTasks = data.data.user_tasks
-      .filter(task => [101, 102, 103].includes(task.TaskId))
+      .filter(task => [101, 102, 103, 104, 105, 106, 107].includes(task.TaskId)) // Update filter
       .map(task => ({
         ...task,
         TaskName: taskNames[task.TaskId] || `Task ${task.TaskId}`,

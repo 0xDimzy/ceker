@@ -59,12 +59,10 @@ async function checkPoints() {
     <div class="result-value">${totalInvitees}</div>
   </div>
   <div class="result-row">
-    <div class="result-label">Completed Tasks</div>
-    <div class="result-value">
-      <div class="task-wrapper">
-        <ul class="task-list">${taskListHtml}</ul>
-      </div>
-    </div>
+    <div class="result-label task-label">Completed Tasks</div>
+  </div>
+  <div class="task-wrapper">
+    <ul class="task-list">${taskListHtml}</ul>
   </div>
 `;
   } catch (err) {

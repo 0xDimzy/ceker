@@ -35,20 +35,35 @@ export default async function handler(req, res) {
     };
 
     // Filter & mapping hasil
-    const filteredTasks = data.data.user_tasks
-      .filter(task => [101, 102, 103, 104, 105, 106, 107].includes(task.TaskId)) // Update filter
-      .map(task => ({
-        ...task,
-        TaskName: taskNames[task.TaskId] || `Task ${task.TaskId}`,
-      }));
+const filteredTasks = data.data.user_tasks
+  .filter(task => [101, 102, 103, 104, 105, 106, 107].includes(task.TaskId))
+  .map(task => ({
+    ...task,
+    TaskName: taskNames[task.TaskId] || `Task ${task.TaskId}`,
+  }));
 
-    res.status(200).json({
-      code: 0,
-      data: {
-        user_tasks: filteredTasks,
-      },
-      msg: 'ok',
-    });
+const taskOrder = [
+  'Zenith Swaps',
+  'Zenith LPs',
+  'Faroswap Swaps',
+  'Faroswap LPs',
+  'Token Transfer',
+  'Pharos Domain',
+  'NFT Badge'
+];
+
+filteredTasks.sort((a, b) => {
+  return taskOrder.indexOf(a.TaskName) - taskOrder.indexOf(b.TaskName);
+});
+
+res.status(200).json({
+  code: 0,
+  data: {
+    user_tasks: filteredTasks,
+  },
+  msg: 'ok',
+});
+
 
   } catch (error) {
     res.status(500).json({ code: 1, msg: 'Internal server error' });

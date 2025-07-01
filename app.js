@@ -1,8 +1,3 @@
-function shortenAddress(address) {
-  if (!address || address.length < 10) return address;
-  return address.slice(0, 6) + '...' + address.slice(-4);
-}
-
 async function checkPoints() {
   const address = document.getElementById('addressInput').value.trim();
   const resultDiv = document.getElementById('result');
@@ -41,6 +36,10 @@ async function checkPoints() {
   <div class="result-row">
     <div class="result-label">Address</div>
     <div class="result-value short-address">${shortenAddress(user.Address)}</div>
+  </div>
+  <div class="result-row">
+    <div class="result-label">Level</div>
+    <div class="result-value">${user.Level || '-'}</div>
   </div>
   <div class="result-row">
     <div class="result-label">Total Points</div>

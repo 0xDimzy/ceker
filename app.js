@@ -42,7 +42,6 @@ async function checkPoints() {
     <div class="result-label">Address</div>
     <div class="result-value short-address">${shortenAddress(user.Address)}</div>
   </div>
-  </div>
   <div class="result-row">
     <div class="result-label">Total Points</div>
     <div class="result-value">${user.TotalPoints}</div>
@@ -60,13 +59,13 @@ async function checkPoints() {
     <div class="result-value">${totalInvitees}</div>
   </div>
   <div class="result-row">
-  <div class="result-label">Completed Tasks</div>
-  <div class="result-value">
-    <div class="task-wrapper">
-      <ul class="task-list">${taskListHtml}</ul>
+    <div class="result-label">Completed Tasks</div>
+    <div class="result-value">
+      <div class="task-wrapper">
+        <ul class="task-list">${taskListHtml}</ul>
+      </div>
     </div>
   </div>
-</div>
 `;
   } catch (err) {
     resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";

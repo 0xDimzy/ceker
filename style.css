@@ -1,9 +1,11 @@
 /* Reset dan dasar */
 * {
   box-sizing: border-box;
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 body {
   background: linear-gradient(135deg, #4b6cb7, #182848);
   color: #f0f4f8;
@@ -13,8 +15,9 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
-  position: relative; /* untuk referensi posisi absolute child */
+  position: relative;
 }
+
 .container {
   background: rgba(255, 255, 255, 0.1);
   padding: 30px 40px;
@@ -26,6 +29,7 @@ body {
   backdrop-filter: blur(10px);
   z-index: 1;
 }
+
 h2 {
   margin-bottom: 20px;
   font-weight: 700;
@@ -33,6 +37,7 @@ h2 {
   color: #cce7ff;
   text-shadow: 1px 1px 3px #00000050;
 }
+
 input[type="text"] {
   width: 100%;
   padding: 12px 15px;
@@ -43,11 +48,13 @@ input[type="text"] {
   outline: none;
   transition: box-shadow 0.3s ease;
 }
+
 input[type="text"]:focus {
   box-shadow: 0 0 8px #a0c4ff;
   background-color: #e7f0ff;
   color: #182848;
 }
+
 button {
   width: 100%;
   padding: 12px 15px;
@@ -61,14 +68,17 @@ button {
   box-shadow: 0 5px 15px #234f7aaa;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
 button:hover {
   background-color: #1d4d8a;
   transform: scale(1.05);
   box-shadow: 0 8px 20px #1d4d8aee;
 }
+
 button:active {
   transform: scale(0.98);
 }
+
 .result {
   margin-top: 25px;
   background-color: rgba(255, 255, 255, 0.15);
@@ -82,11 +92,13 @@ button:active {
   line-height: 1.4;
   word-break: break-word;
 }
+
 .error {
   color: #ff6b6b;
   font-weight: 600;
   text-align: center;
 }
+
 footer {
   margin-top: 20px;
   font-size: 0.9rem;
@@ -95,6 +107,7 @@ footer {
   text-align: center;
   z-index: 1;
 }
+
 .note {
   color: #ff9900;
   font-style: italic;
@@ -182,13 +195,27 @@ footer {
   text-align: right;
   flex: 1;
   color: #fff;
-  word-break: break-all;
+  word-break: break-word;
+}
+
+/* ✅ Tambahan penting untuk styling task list agar tidak berantakan */
+.task-wrapper {
+  width: 100%;
 }
 
 .task-list {
-  margin: 0;
-  padding-left: 18px;
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 6px 0 0 0;
   color: #cce7ff;
+  text-align: left;
+  word-break: normal;
+  white-space: normal;
+}
+
+.task-list li {
+  line-height: 1.5;
+  margin-bottom: 4px;
 }
 
 .result-row:last-child {
@@ -200,11 +227,15 @@ footer {
     flex-direction: column;
     align-items: flex-start;
   }
-  .result-label, .result-value {
+
+  .result-label,
+  .result-value {
     text-align: left;
     width: 100%;
   }
-}
-.task-wrapper {
-  width: 100%;
+
+  .task-list li {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
 }

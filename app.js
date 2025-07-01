@@ -1,3 +1,8 @@
+function shortenAddress(address) {
+  if (!address || address.length < 10) return address;
+  return address.slice(0, 6) + '...' + address.slice(-4);
+}
+
 async function checkPoints() {
   const address = document.getElementById('addressInput').value.trim();
   const resultDiv = document.getElementById('result');
@@ -33,7 +38,7 @@ async function checkPoints() {
     }).join("");
 
     resultDiv.innerHTML = `
-      <p><b>Address:</b> ${user.Address}</p>
+      <p><b>Address:</b> <span class="short-address">${shortenAddress(user.Address)}</span></p>
       <p><b>Total Points:</b> ${user.TotalPoints}</p>
       <p><b>Task Points:</b> ${user.TaskPoints}</p>
       <p><b>Invite Points:</b> ${user.InvitePoints}</p>

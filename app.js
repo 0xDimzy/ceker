@@ -38,14 +38,34 @@ async function checkPoints() {
     }).join("");
 
     resultDiv.innerHTML = `
-      <p><b>Address:</b> <span class="short-address">${shortenAddress(user.Address)}</span></p>
-      <p><b>Total Points:</b> ${user.TotalPoints}</p>
-      <p><b>Task Points:</b> ${user.TaskPoints}</p>
-      <p><b>Invite Points:</b> ${user.InvitePoints}</p>
-      <p><b>Total Invitees:</b> ${totalInvitees}</p>
-      <p><b>Completed Tasks:</b></p>
-      <ul>${taskListHtml}</ul>
-    `;
+      resultDiv.innerHTML = `
+  <div class="result-row">
+    <div class="result-label">Address</div>
+    <div class="result-value short-address">${shortenAddress(user.Address)}</div>
+  </div>
+  <div class="result-row">
+    <div class="result-label">Total Points</div>
+    <div class="result-value">${user.TotalPoints}</div>
+  </div>
+  <div class="result-row">
+    <div class="result-label">Task Points</div>
+    <div class="result-value">${user.TaskPoints}</div>
+  </div>
+  <div class="result-row">
+    <div class="result-label">Invite Points</div>
+    <div class="result-value">${user.InvitePoints}</div>
+  </div>
+  <div class="result-row">
+    <div class="result-label">Total Invitees</div>
+    <div class="result-value">${totalInvitees}</div>
+  </div>
+  <div class="result-row">
+    <div class="result-label">Completed Tasks</div>
+    <div class="result-value">
+      <ul class="task-list">${taskListHtml}</ul>
+    </div>
+  </div>
+`;
   } catch (err) {
     resultDiv.innerHTML = "<p class='error'>An error occurred while fetching data.</p>";
     console.error(err);

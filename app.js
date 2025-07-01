@@ -38,7 +38,6 @@ async function checkPoints() {
       <p><b>Task Points:</b> ${user.TaskPoints}</p>
       <p><b>Invite Points:</b> ${user.InvitePoints}</p>
       <p><b>Total Invitees:</b> ${totalInvitees}</p>
-      <p><b>Is KOL:</b> ${user.IsKol ? 'Yes' : 'No'}</p>
       <p><b>Completed Tasks:</b></p>
       <ul>${taskListHtml}</ul>
     `;

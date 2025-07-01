@@ -152,8 +152,6 @@ footer {
   height: 18px;
   margin-right: 8px;
 }
-
-/* RESPONSIVE UNTUK TOMBOL TELEGRAM */
 @media screen and (max-width: 600px) {
   .telegram-button {
     top: 10px;
@@ -175,7 +173,6 @@ footer {
     padding: 20px 20px;
   }
 }
-
 .result-row {
   display: flex;
   justify-content: space-between;
@@ -198,15 +195,21 @@ footer {
   word-break: break-word;
 }
 
-/* ✅ Tambahan penting untuk styling task list agar tidak berantakan */
 .task-wrapper {
   width: 100%;
+  margin-top: 4px;
+}
+
+.task-label {
+  font-weight: 600;
+  color: #a0bfff;
+  margin-bottom: 6px;
 }
 
 .task-list {
   list-style-type: disc;
   padding-left: 20px;
-  margin: 6px 0 0 0;
+  margin: 0;
   color: #cce7ff;
   text-align: left;
   word-break: normal;
@@ -214,28 +217,12 @@ footer {
 }
 
 .task-list li {
-  line-height: 1.5;
   margin-bottom: 4px;
+  line-height: 1.5;
+  font-size: 0.98rem;
 }
-
-.result-row:last-child {
-  border-bottom: none;
-}
-
 @media (max-width: 500px) {
-  .result-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .result-label,
-  .result-value {
-    text-align: left;
-    width: 100%;
-  }
-
   .task-list li {
     font-size: 0.95rem;
-    line-height: 1.5;
   }
 }
